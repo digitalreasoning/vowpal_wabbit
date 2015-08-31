@@ -3,29 +3,32 @@ ifeq ($(JAVA_HOME),)
   exit 1
 endif
 
-VWLIBS := -L../vowpalwabbit -l vw -l allreduce
+VWLIBS := -L../vowpalwabbit/.libs/ -l vw -l allreduce
 STDLIBS = $(BOOST_LIBRARY) $(LIBS)
 JAVA_INCLUDE = -I $(JAVA_HOME)/include
+FLAGS += -std=c++11 -fPIC
 
 ifeq ($(UNAME), Linux)
-  JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
+	JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
 endif
 ifeq ($(UNAME), FreeBSD)
-  JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
+	JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
 endif
 ifeq "CYGWIN" "$(findstring CYGWIN,$(UNAME))"
-  JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
+	JAVA_INCLUDE += -I $(JAVA_HOME)/include/linux
 endif
 ifeq ($(UNAME), Darwin)
-  JAVA_INCLUDE += -I $(JAVA_HOME)/include/darwin
+	JAVA_INCLUDE += -I $(JAVA_HOME)/include/darwin
 endif
+
 
 all:
 	cd ..; $(MAKE)
 
 test:
 	cd ..; $(MAKE) test
-	
+
+
 things: pom_version target/vw_jni.lib	
 
 pom_version: pom.xml
@@ -33,7 +36,7 @@ pom_version: pom.xml
 	newVer=$$(perl -e "@a=split('\.', '$$ver'); \$$a[2]++; print(join('.', @a))") && \
 	perl -pi -e "s/(\s*)<version>.*-SNAPSHOT/\1<version>$$newVer-SNAPSHOT/" pom.xml
 
-target/vw_jni.lib: src/main/c++/vw_VW.cc ../vowpalwabbit/main.o ../vowpalwabbit/libvw.a ../vowpalwabbit/liballreduce.a
+target/vw_jni.lib: src/main/c++/vw_VW.cc ../vowpalwabbit/main.o ../vowpalwabbit/.libs/libvw.a ../vowpalwabbit/.libs/liballreduce.a
 	mkdir -p target;
 	$(CXX) -shared $(FLAGS) -o $@ $< $(VWLIBS) $(STDLIBS) $(JAVA_INCLUDE)
 
