@@ -3,6 +3,7 @@ ifeq ($(JAVA_HOME),)
   exit 1
 endif
 
+UNAME = $(shell uname -s)
 VWLIBS := -L../vowpalwabbit/.libs/ -l vw -l allreduce
 STDLIBS = $(BOOST_LIBRARY) $(LIBS)
 JAVA_INCLUDE = -I $(JAVA_HOME)/include
