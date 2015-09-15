@@ -17,6 +17,7 @@ license as described in the file LICENSE.
 #include "search_hooktask.h"
 #include "search_graph.h"
 #include "search_meta.h"
+#include "search_java_task.h"
 #include "csoaa.h"
 #include "active.h"
 #include "label_dictionary.h"
@@ -41,6 +42,7 @@ namespace Search {
     &EntityRelationTask::task,
     &HookTask::task,
     &GraphTask::task,
+    &JavaTask::task,
     nullptr };   // must nullptr terminate!
 
   search_metatask* all_metatasks[] = {
@@ -2043,6 +2045,7 @@ namespace Search {
         ("search_no_caching",                             "turn off the built-in caching ability (makes things slower, but technically more safe)")
         ("search_xv",                                     "train two separate policies, alternating prediction/learning")
         ("search_perturb_oracle",    po::value<float>(),  "perturb the oracle on rollin with this probability (def: 0)")
+            ("search_java_class", po::value<string>(), "fully qualified java class name that implements vw.search.SearchTask")
         ;
     add_options(all);
     po::variables_map& vm = all.vm;

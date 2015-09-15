@@ -2,6 +2,7 @@
 #include "../../../../vowpalwabbit/vw.h"
 #include "vw_VW.h"
 
+
 void throw_java_exception(JNIEnv *env, const char* name, const char* msg) {
      jclass jc = env->FindClass(name);
      if (jc)
@@ -34,6 +35,7 @@ JNIEXPORT jstring JNICALL Java_vw_VW_version(JNIEnv *env, jobject obj) {
 
 JNIEXPORT jlong JNICALL Java_vw_VW_initialize(JNIEnv *env, jobject obj, jstring command) {
     jlong vwPtr = 0;
+    java_environment = *env;
     try {
         vw* vwInstance = VW::initialize(env->GetStringUTFChars(command, NULL));
         vwPtr = (jlong)vwInstance;

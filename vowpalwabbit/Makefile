@@ -1,5 +1,6 @@
 BINARIES = vw active_interactor
 MANPAGES = vw.1
+JAVA_INCLUDE = -I $(JAVA_HOME)/include -I $(JAVA_HOME)/include/linux
 
 VWLIBS := -L. -l vw -l allreduce
 STDLIBS = $(BOOST_LIBRARY) $(LIBS)
@@ -29,7 +30,7 @@ vw_DEPS = $(patsubst %.cc,%.d,$(vw_SOURCES))
 -include $(vw_DEPS)
 
 %.o:	 %.cc  %.h
-	$(CXX) $(FLAGS) -c $< -o $@
+	$(CXX) $(FLAGS) $(JAVA_INCLUDE) -c $< -o $@
 
 %.o:	 %.cc
 	$(CXX) $(FLAGS) -c $< -o $@

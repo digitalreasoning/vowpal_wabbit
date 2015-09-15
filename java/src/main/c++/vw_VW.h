@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+JNIEnv java_environment;
+
 /*
  * Class:     vw_VW
  * Method:    version
